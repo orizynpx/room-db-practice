@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalUuidApi::class)
 
-package io.github.orizynpx.roomdbpractice.data
+package io.github.orizynpx.roomdbpractice.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

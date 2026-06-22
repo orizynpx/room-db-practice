@@ -7,10 +7,7 @@ import androidx.room.RoomDatabase
 import io.github.orizynpx.roomdbpractice.data.model.Category
 import io.github.orizynpx.roomdbpractice.data.model.ResearchPaper
 
-@Database(
-    entities = [ResearchPaper::class, Category::class],
-    version = 1,
-)
+@Database(entities = [ResearchPaper::class, Category::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun researchPaperDao(): ResearchPaperDao
     abstract fun categoryDao(): CategoryDao
@@ -25,7 +22,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "papers_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = instance
                 instance
             }

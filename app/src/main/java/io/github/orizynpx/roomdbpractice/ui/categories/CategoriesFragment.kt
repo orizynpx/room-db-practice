@@ -1,60 +1,61 @@
 package io.github.orizynpx.roomdbpractice.ui.categories
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import io.github.orizynpx.roomdbpractice.R
+import io.github.orizynpx.roomdbpractice.MainApplication
+import io.github.orizynpx.roomdbpractice.ui.MainViewModel
+import io.github.orizynpx.roomdbpractice.ui.MainViewModelFactory
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CategoriesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CategoriesFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private val viewModel: MainViewModel by activityViewModels {
+        MainViewModelFactory((requireActivity().application as MainApplication).repository)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_categories, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CategoriesFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CategoriesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val editCategoryName = view.findViewById<EditText>(R.id.editCategoryName)
+        val btnAddCategory = view.findViewById<Button>(R.id.btnAddCategory)
+        val editAuthorName = view.findViewById<EditText>(R.id.editAuthorName)
+        val editAuthorAffiliation = view.findViewById<EditText>(R.id.editAuthorAffiliation)
+        val btnAddAuthor = view.findViewById<Button>(R.id.btnAddAuthor)
+
+        btnAddCategory.setOnClickListener {
+            val name = editCategoryName.text.toString()
+            if (name.isNotBlank()) {
+                viewModel.addCategory(name)
+                editCategoryName.text.clear()
+            } else {
+                Toast.makeText(requireContext(), "Enter category name", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        btnAddAuthor.setOnClickListener {
+            val name = editAuthorName.text.toString()
+            val affiliation = editAuthorAffiliation.text.toString()
+            if (name.isNotBlank() && affiliation.isNotBlank()) {
+                viewModel.addAuthor(name, affiliation)
+                editAuthorName.text.clear()
+                editAuthorAffiliation.text.clear()
+            } else {
+                Toast.makeText(requireContext(), "Enter author name and affiliation", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

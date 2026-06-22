@@ -1,6 +1,7 @@
 package io.github.orizynpx.roomdbpractice.ui
 
 import androidx.lifecycle.*
+import io.github.orizynpx.roomdbpractice.data.model.Author
 import io.github.orizynpx.roomdbpractice.data.model.Category
 import io.github.orizynpx.roomdbpractice.data.model.ResearchPaper
 import io.github.orizynpx.roomdbpractice.data.repository.Repository
@@ -8,19 +9,25 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(private val repo: Repository) : ViewModel() {
     val categories = repo.allCategories.asLiveData()
+    val authors = repo.allAuthors.asLiveData()
     val papersWithCategory = repo.allPapersWithCategory.asLiveData()
 
     fun addCategory(name: String) = viewModelScope.launch {
         repo.insertCategory(Category(name = name))
     }
 
-    fun addPaper(title: String, abstract: String, categoryId: Long) = viewModelScope.launch {
-        repo.insertPaper(
+    fun addAuthor(name: String, affiliation: String) = viewModelScope.launch {
+        repo.insertAuthor(Author(name = name, affiliation = affiliation))
+    }
+
+    fun addPaper(title: String, abstract: String, categoryId: Long, authorIds: List<Long>) = viewModelScope.launch {
+        repo.insertPaperWithAuthors(
             ResearchPaper(
                 title = title,
                 abstract = abstract,
                 categoryId = categoryId
-            )
+            ),
+            authorIds
         )
     }
 }

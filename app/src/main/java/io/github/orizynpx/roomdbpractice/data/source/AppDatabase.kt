@@ -4,13 +4,22 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import io.github.orizynpx.roomdbpractice.data.model.Category
-import io.github.orizynpx.roomdbpractice.data.model.ResearchPaper
+import io.github.orizynpx.roomdbpractice.data.model.*
 
-@Database(entities = [ResearchPaper::class, Category::class], version = 1, exportSchema = false)
+@Database(
+    entities = [
+        ResearchPaper::class,
+        Category::class,
+        Author::class,
+        PaperAuthorCrossRef::class
+    ],
+    version = 2,
+    exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun researchPaperDao(): ResearchPaperDao
     abstract fun categoryDao(): CategoryDao
+    abstract fun authorDao(): AuthorDao
 
     companion object {
         @Volatile

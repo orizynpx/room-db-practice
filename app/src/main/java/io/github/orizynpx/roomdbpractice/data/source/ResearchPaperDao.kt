@@ -1,6 +1,7 @@
 package io.github.orizynpx.roomdbpractice.data.source
 
 import androidx.room.*
+import io.github.orizynpx.roomdbpractice.data.model.PaperAuthorCrossRef
 import io.github.orizynpx.roomdbpractice.data.model.ResearchPaper
 import io.github.orizynpx.roomdbpractice.data.model.ResearchPaperWithCategory
 import kotlinx.coroutines.flow.Flow
@@ -9,6 +10,9 @@ import kotlinx.coroutines.flow.Flow
 interface ResearchPaperDao {
     @Insert
     suspend fun insert(paper: ResearchPaper): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPaperAuthorCrossRef(crossRef: PaperAuthorCrossRef)
 
     @Update
     suspend fun update(paper: ResearchPaper)

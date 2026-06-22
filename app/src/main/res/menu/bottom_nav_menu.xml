@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/paperListFragment"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:title="Papers" />
+    <item
+        android:id="@+id/categoriesFragment"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="Manage" />
+</menu>
